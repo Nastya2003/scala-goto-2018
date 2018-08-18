@@ -4,7 +4,7 @@
     }
   }
 
-  object day3Base {
+  object day3 {
     def isOdd(x: Int): Boolean = x % 2 == 0
 
     def isEven(x: Int): Boolean = x % 2 != 0
@@ -38,4 +38,17 @@
       b = nthGreatestDivisor(a, b, c)
       if (b.length == 2) true else false
     }
+   
+   def rle1(a: List[List[Char]], b: List[Any] = List()): List[Any] = a match {
+      case (Nil) => Nil
+      case (i :: tail) => if (i.length == 1) rle1(tail, b :+ i(0)) else rle1(tail, b :+ i)
+    }
+
+    def rle2(a: List[List[Char]], b: List[Char] = List()): List[Char] = a match {
+    case (Nil) => Nil
+    case (i :: tail) => if (i.length == 1) rle2(tail, b :+ i(0)) else i match {
+      case (Nil) => Nil
+      case (a :: tail) => rle2(tail, b :+ a)
+    }
   }
+}
