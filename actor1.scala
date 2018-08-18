@@ -6,9 +6,6 @@ import scala.collection._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-case class SetRequest(key: String, value: String)
-case class GetRequest(key: String)
-case class GetResponse(key: Option[String])
 case class set(a: String, b: Int)
 case class bet(a: String, b: Int)
 case object Start
