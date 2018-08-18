@@ -25,6 +25,7 @@ class aucActor extends Actor with ActorLogging {
     }
     case r: bet => log.warning(s"${r.a} minimum price is: ${r.b}")
   }
+  if (state == Nil) context.system.terminate()
 }
 
 class mainActor extends Actor with ActorLogging {
@@ -55,7 +56,6 @@ class mainActor extends Actor with ActorLogging {
       aucActor ! bet("brilliant", 250)
       aucActor ! bet("silver", 120)
       aucActor ! bet("brilliant", 400)
-      context.system.terminate()
   }
 }
 
