@@ -1,3 +1,4 @@
+
 import akka.actor._
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
@@ -12,12 +13,18 @@ case object Start
 
 class aucActor extends Actor with ActorLogging {
   val state: mutable.Map[String, Int] = mutable.Map.empty
-
+  var currPrice = 0
   def receive = {
     case r: set =>
       state += r.a -> r.b
+    case r: bet if state(r.a) <= r.b =>
+      log.warning(s"Bought by ${r.b}")
+    case r: bet if currPrice < r.b => {
+      currPrice = r.b
+      log.warning(s"Current prise is: ${currPrice}")
+    }
     case r: bet =>
-      
+      log.warning(s"Minimum price is: ${r.b}")
     case r =>
       log.warning(s"Unexpected: $r")
   }
@@ -25,7 +32,7 @@ class aucActor extends Actor with ActorLogging {
 
 class mainActor extends Actor with ActorLogging {
   val state: mutable.Map[String, Int] = mutable.Map.empty
-  val mapActor = context.actorOf(Props(new aucActor), "mapActor")
+  val aucActor = context.actorOf(Props(new aucActor), "aucActor")
 
   implicit val timeout = Timeout(5 seconds)
 
@@ -38,7 +45,6 @@ class mainActor extends Actor with ActorLogging {
       aucActor ! set("gold", 150)
       log.warning(s"First prise: 150")
 
-    case r: bet =>
       aucActor ! bet("gold", 120)
       aucActor ! bet("gold", 80)
       aucActor ! bet("gold", 200)
