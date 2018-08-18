@@ -27,7 +27,7 @@ class aucActor extends Actor with ActorLogging {
 }
 
 class mainActor extends Actor with ActorLogging {
-  val state: mutable.Map[String, String] = mutable.Map.empty
+  val state: mutable.Map[String, Int] = mutable.Map.empty
   val mapActor = context.actorOf(Props(new aucActor), "mapActor")
 
   implicit val timeout = Timeout(5 seconds)
