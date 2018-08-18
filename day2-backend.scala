@@ -94,8 +94,4 @@ object Main extends App {
     }
   }
 
-  object day2Hard {
-    def duplicate(n: Int, a: List[Char]): List[Char] = {
-      a.map(i => List.fill(n)(i)).flatten
-    }
-  }
+  
