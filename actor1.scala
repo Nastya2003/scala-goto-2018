@@ -37,8 +37,8 @@ class mainActor extends Actor with ActorLogging {
   }
 
   def receive = {
-    val fp = 150
     case Start =>
+      val fp = 150
       aucActor ! set("gold", fp)
       log.warning(s"First prise: $fp")
 
