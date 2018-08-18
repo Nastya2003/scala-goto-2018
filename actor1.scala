@@ -20,7 +20,7 @@ class aucActor extends Actor with ActorLogging {
     case r: set =>
       state += r.a -> r.b
     case r: bet =>
-      sender ! bet(state.get(r.b))
+      
     case r =>
       log.warning(s"Unexpected: $r")
   }
@@ -38,13 +38,13 @@ class mainActor extends Actor with ActorLogging {
 
   def receive = {
     case Start =>
-      val fp = 150
-      aucActor ! set("gold", fp)
-      log.warning(s"First prise: $fp")
+      aucActor ! set("gold", 150)
+      log.warning(s"First prise: 150")
 
     case r: bet =>
-      if(r.b <= fp) log.warning(s"Prise if the same: $r")
-      else log.warning(s"New prise: $r.b")
+      aucActor ! bet("gold", 120)
+      aucActor ! bet("gold", 80)
+      aucActor ! bet("gold", 200)
       context.system.terminate()
   }
 }
