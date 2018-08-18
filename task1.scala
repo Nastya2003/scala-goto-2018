@@ -8,6 +8,9 @@
     def isOdd(x: Int): Boolean = x % 2 == 0
     def isEven(x: Int): Boolean = x % 2 != 0
 
-    def sumOfDigits(x: Int): Int = 
-      x = x / 10 + sumOfDigits(x - x / 10)
+    def sumOfDigits(x: Int): Int =
+      x / 10 + sumOfDigits(x - x / 10)
+
+    def compositionOfDigits(x: Int): Int =
+      (x / 10) * sumOfDigits(x - x / 10)
   }
