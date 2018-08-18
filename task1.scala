@@ -49,6 +49,30 @@
     case (i :: tail) => if (i.length == 1) rle2(tail, b :+ i(0)) else i match {
       case (Nil) => Nil
       case (a :: tail) => rle2(tail, b :+ a)
+     }
+   }
+   
+    def plusMinus(a: List[Int], pred: Int = 0): Int = a match {
+      case (Nil) => 0
+      case (i :: tail) => if (i >= 0 && pred >= 0) 0 + plusMinus(tail, i) else 1 + plusMinus(tail, i)
     }
-  }
+
+    def Letters(a: List[Char], vowel: List[Char] = List('a', 'e', 'u', 'i', 'o', 'y')): Int = a match {
+    case (Nil) => 0
+    case (i :: tail) => if (vowel.contains(i)) 1 + Letters(tail, vowel) else 0 + Letters(tail, vowel)
+    }
+
+    def isBinary(a: Int): Boolean = {
+      if (a == 0 || a == 1) false
+      else if (a % 2 == 0) true
+      else isBinary(a / 2)
+    }
+
+    def binaryDivisors(a: Int, b: Int = 1, c: List[Int] = List()): List[Int] = {
+      if (isBinary(a)) {
+        val b = b * 2
+        if (a >= b) binaryDivisors(a, b, c :: b)
+      }
+      else Nil
+    }
 }
