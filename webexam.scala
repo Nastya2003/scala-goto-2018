@@ -78,6 +78,95 @@ object Main extends App {
     .onComplete(_ => system.terminate())
 }
 
+// задание 4
+import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
+import akka.stream.ActorMaterializer
+import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.server.Directives._
+import scala.io.StdIn
+import akka.actor._
+
+case class Div(a: Int, b: Int)
+case object Start
+
+class firstActor extends Actor with ActorLogging {
+  import Main.system
+  val secondActor = system.actorOf(Props(new secondActor), "secondActor")
+  def receive = {
+    case r: Div => if (r.a != 1) {
+      val r.b = r.a - 1
+      val numb = r.a / r.b
+      secondActor ! (numb)
+      log.warning(numb.toString)
+      complete(numb.toString)
+    }
+    else {
+      complete("Error")
+      log.warning("Error")
+      context.system.terminate()
+    }
+  }
+}
+
+class secondActor extends Actor with ActorLogging {
+  import Main.system
+  val thirdActor = system.actorOf(Props(new thirdActor), "thirdActor")
+  def receive = {
+    case r: Div => if (r.a != 1) {
+      val r.b = r.a - 1
+      val numb = r.a / r.b
+      thirdActor ! (numb)
+      log.warning(numb.toString)
+      complete(numb.toString)
+    }
+    else {
+      complete("Error")
+      log.warning("Error")
+      context.system.terminate()
+    }
+  }
+}
+
+class thirdActor extends Actor with ActorLogging {
+  def receive = {
+    case r: Div => if (r.a != 1) {
+      val r.b = r.a - 1
+      val numb = r.a / r.b
+      log.warning(numb.toString)
+      complete(numb.toString)
+    }
+    else {
+      complete("Error")
+      log.warning("Error")
+      context.system.terminate()
+    }
+  }
+}
+
+object Main extends App {
+  implicit val system = ActorSystem("my-system")
+  implicit val materializer = ActorMaterializer()
+  implicit val executionContext = system.dispatcher
+  val firstActor = system.actorOf(Props(new firstActor), "firstActor")
+
+  val route: Route =
+    path("number" / IntNumber) { (numb: Int) =>
+      firstActor ! (numb)
+      complete(numb.toString)
+    }
+
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
+
+  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+  StdIn.readLine()
+  bindingFuture
+    .flatMap(_.unbind())
+    .onComplete(_ => system.terminate())
+}
+
+
 
 // задание 1
 object task1 {
