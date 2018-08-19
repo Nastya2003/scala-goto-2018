@@ -88,16 +88,15 @@ import akka.http.scaladsl.server.Directives._
 import scala.io.StdIn
 import akka.actor._
 
-case class Div(a: Int, b: Int)
 case object Start
 
 class firstActor extends Actor with ActorLogging {
   import Main.system
   val secondActor = system.actorOf(Props(new secondActor), "secondActor")
   def receive = {
-    case r: Div => if (r.a != 1) {
-      val r.b = r.a - 1
-      val numb = r.a / r.b
+    case r: Int => if (r != 1) {
+      val numb1= r - 1
+      val numb = r / numb1
       secondActor ! (numb)
       log.warning(numb.toString)
       complete(numb.toString)
@@ -114,9 +113,9 @@ class secondActor extends Actor with ActorLogging {
   import Main.system
   val thirdActor = system.actorOf(Props(new thirdActor), "thirdActor")
   def receive = {
-    case r: Div => if (r.a != 1) {
-      val r.b = r.a - 1
-      val numb = r.a / r.b
+    case r: Int => if (r!= 1) {
+      val numb1 = r - 1
+      val numb = r / numb1
       thirdActor ! (numb)
       log.warning(numb.toString)
       complete(numb.toString)
@@ -131,9 +130,9 @@ class secondActor extends Actor with ActorLogging {
 
 class thirdActor extends Actor with ActorLogging {
   def receive = {
-    case r: Div => if (r.a != 1) {
-      val r.b = r.a - 1
-      val numb = r.a / r.b
+    case r: Int => if (r != 1) {
+      val numb1 = r - 1
+      val numb = r / numb1
       log.warning(numb.toString)
       complete(numb.toString)
     }
