@@ -38,20 +38,25 @@
       b = nthGreatestDivisor(a, b, c)
       if (b.length == 2) true else false
     }
-   
-   def rle1(a: List[List[Char]], b: List[Any] = List()): List[Any] = a match {
+
+    def rle1(a: List[List[Char]], b: List[Any] = List()): List[Any] = a match {
       case (Nil) => Nil
       case (i :: tail) => if (i.length == 1) rle1(tail, b :+ i(0)) else rle1(tail, b :+ i)
     }
 
-    def rle2(a: List[List[Char]], b: List[Char] = List()): List[Char] = a match {
-    case (Nil) => Nil
-    case (i :: tail) => if (i.length == 1) rle2(tail, b :+ i(0)) else i match {
+    def rle21(a: List[Char], b: List[Char] = List()): List[Char] = a match {
       case (Nil) => Nil
-      case (a :: tail) => rle2(tail, b :+ a)
-     }
-   }
-   
+      case (i :: tail) => rle21(tail, b :+ i)
+    }
+
+    def rle2(a: List[List[Char]], b: List[Char] = List()): List[Char] = a match {
+      case (Nil) => Nil
+      case (i :: tail) => if (i.length == 1) rle2(tail, b :+ i(0)) else i match {
+         case (Nil) => Nil
+         case (a :: tail) => rle21(tail, b :+ a)
+      }
+    }
+
     def plusMinus(a: List[Int], pred: Int = 0): Int = a match {
       case (Nil) => 0
       case (i :: tail) => if (i >= 0 && pred >= 0) 0 + plusMinus(tail, i) else 1 + plusMinus(tail, i)
@@ -68,11 +73,11 @@
       else isBinary(a / 2)
     }
 
-    def binaryDivisors(a: Int, b: Int = 1, c: List[Int] = List()): List[Int] = {
-      if (isBinary(a)) {
-        val b = b * 2
-        if (a >= b) binaryDivisors(a, b, c :: b)
-      }
-      else Nil
-    }
+//    def binaryDivisors(a: Int, b: Int = 1, c: List[Int] = List()): List[Any] = {
+//      if (isBinary(a)) {
+//        var b = b * 2
+//        if (a >= b) binaryDivisors(a, b, c :+ b)
+//      }
+//      else Nil
+//    }
 }
