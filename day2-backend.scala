@@ -1,4 +1,3 @@
-
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.util.Timeout
 import scala.concurrent.Future
