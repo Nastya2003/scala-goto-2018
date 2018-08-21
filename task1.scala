@@ -72,12 +72,11 @@
       else if (a % 2 == 0) true
       else isBinary(a / 2)
     }
-
-//    def binaryDivisors(a: Int, b: Int = 1, c: List[Int] = List()): List[Any] = {
-//      if (isBinary(a)) {
-//        var b = b * 2
-//        if (a >= b) binaryDivisors(a, b, c :+ b)
-//      }
-//      else Nil
-//    }
+   
+    def binaryDivisors(a: Int, b: Int = 1, c: List[Int] = List()): List[Any] = {
+     if (isBinary(a)) {
+       if (a >= b * 2) binaryDivisors(a, b, c :+ b)
+     }
+     else Nil
+    }
 }
